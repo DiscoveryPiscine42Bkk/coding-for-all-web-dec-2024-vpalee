@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Background Color</title>
+    
+    <!-- ลิงก์ไปยัง jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- ลิงก์ไปยังไฟล์ CSS สำหรับการตกแต่งเพิ่มเติม -->
+    <link rel="stylesheet" href="backgroound.css">
+</head>
+<body>
+
+    <!-- ปุ่มที่มี ID เพื่อใช้สำหรับการเปลี่ยนสีพื้นหลัง -->
+    <button id="clickMeButton">Click Me!</button>
+
+    <script>
+        $(document).ready(function() {
+
+            $('#clickMeButton').click(function() {
+                // ตั้งตัวดักจับเหตุการณ์คลิกที่ปุ่ม
+
+                // สร้างสีแบบสุ่ม
+                var randomColor = getRandomColor();
+
+                // เปลี่ยนสีพื้นหลังของหน้าเว็บเป็นสีที่สร้างขึ้น
+                $('body').css('background-color', randomColor);
+            });
+
+            // ฟังก์ชันสำหรับสร้างสีแบบเลขฐานสิบหก
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF'; // ตัวอักษรที่ใช้ในโค้ดสีฐาน 16
+                var color = '#'; // เริ่มต้นสีด้วยสัญลักษณ์ #
+                for (var i = 0; i < 6; i++) {
+                    // เพิ่มตัวอักษรแบบสุ่มจาก 'letters' ไปยัง 'color'
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+        });
+    </script>
+
+</body>
+</html>

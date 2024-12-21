@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balloon Example</title>
+    
+    <!-- ลิงก์ไปยัง jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            height: 100vh;
+            margin: 0; /* ลบขอบของ body */
+            display: flex; /* จัดให้องค์ประกอบภายในเป็น Flexbox */
+            justify-content: center; /* จัดวางให้อยู่ตรงกลางในแนวนอน */
+            align-items: center; 
+            background-color: #f0f0f0;
+        }
+
+        #balloon {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            border-radius: 50%; /* ทำให้เป็นวงกลม */
+            display: flex;
+            justify-content: center; /* จัดวางตรงกลางในแนวนอน */
+            align-items: center; /* จัดวางตรงกลางในแนวตั้ง */
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อวางบนลูกโป่ง */
+            transition: all 0.3s ease; /* เพิ่มเอฟเฟกต์ */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ลูกโป่งที่จะขยายหรือยุบเมื่อมีการคลิกหรือออกจากพื้นที่ -->
+    <div id="balloon"></div>
+
+    <script>
+        $(document).ready(function() {
+            var colors = ['red', 'green', 'blue']; 
+            var currentColorIndex = 0; // สีปัจจุบัน
+            var balloonSize = 200; // ขนาดเริ่มต้นของลูกโป่ง
+
+            // ฟังก์ชันสำหรับการคลิกที่ลูกโป่ง
+            $('#balloon').click(function() {
+                if (balloonSize >= 415) {
+                    balloonSize = 200;
+                    $('#balloon').css({
+                        'width': balloonSize + 'px',
+                        'height': balloonSize + 'px',
+                        'background-color': colors[0] // รีเซ็ตสีเป็นสีเริ่มต้น
+                    });
+                    currentColorIndex = 0; // รีเซ็ตสีปัจจุบัน
+                } else {
+                    // เพิ่มขนาดลูกโป่งครั้งละ 10px
+                    balloonSize += 10;
+
+                    // เปลี่ยนสีไปยังสีถัดไปในอาเรย์
+                    currentColorIndex = (currentColorIndex + 1) % colors.length;
+
+                    // อัปเดตขนาดและสีของลูกโป่ง
+                    $('#balloon').css({
+                        'width': balloonSize + 'px',
+                        'height': balloonSize + 'px',
+                        'background-color': colors[currentColorIndex]
+                    });
+                }
+            });
+
+            // ฟังก์ชันสำหรับการเลื่อนเมาส์ออกจากลูกโป่ง
+            $('#balloon').mouseleave(function() {
+                if (balloonSize > 200) {
+                    // ลดขนาดลูกโป่งครั้งละ 5px ถ้าขนาดเกิน 200px
+                    balloonSize -= 5;
+
+                    // ย้อนกลับไปยังสีก่อนหน้าในอาเรย์
+                    currentColorIndex = (currentColorIndex - 1 + colors.length) % colors.length;
+
+                    // อัปเดตขนาดและสีของลูกโป่ง
+                    $('#balloon').css({
+                        'width': balloonSize + 'px',
+                        'height': balloonSize + 'px',
+                        'background-color': colors[currentColorIndex]
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

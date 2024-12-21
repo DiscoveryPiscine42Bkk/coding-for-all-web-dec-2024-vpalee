@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- กำหนดการเข้ารหัสอักขระและการตอบสนองของหน้าเว็บ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Calculator</title>
+
+    <!-- ลิงก์ไปยัง jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- หัวข้อของเครื่องคิดเลข -->
+    <h1>Calculator It's over 9000</h1>
+
+    <!-- อินพุตตัวเลขซ้าย -->
+    <input type="text" id="leftOperand" placeholder="Left number">
+
+    <!-- เมนูแบบเลือกสำหรับตัวดำเนินการ (operator) -->
+    <select id="operator">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+        <option value="%">%</option>
+    </select>
+
+    <!-- อินพุตตัวเลขขวา -->
+    <input type="text" id="rightOperand" placeholder="Right number">
+
+    <!-- ปุ่มสำหรับคำนวณ -->
+    <button id="calculateButton">Try me!</button>
+    
+    <script>
+        $(document).ready(function() {
+            $('#calculateButton').click(function() {
+                // ดึงค่าจากอินพุตและตัวดำเนินการ
+                const leftOperand = $('#leftOperand').val();
+                const rightOperand = $('#rightOperand').val();
+                const operator = $('#operator').val();
+
+                // ตรวจสอบว่าอินพุตเป็นจำนวนเต็มบวก
+                if (!isPositiveInteger(leftOperand) || !isPositiveInteger(rightOperand)) {
+                    alert("Error :("); // แสดงข้อความข้อผิดพลาด
+                    console.error("Error :("); // บันทึกข้อผิดพลาดในคอนโซล
+                    return;
+                }
+
+                // ตรวจสอบว่าค่าของตัวเลขไม่เกิน 2147483647
+                if ((leftOperand) > 2147483647 || (rightOperand) > 2147483647) {
+                    alert("Error :(");
+                    console.error("Error :(");
+                    return;
+                }
+
+                // แปลงค่าจากข้อความเป็นจำนวนเต็ม
+                const num1 = parseInt(leftOperand);
+                const num2 = parseInt(rightOperand);
+                let result;
+
+                try {
+                    // ใช้ `switch` เพื่อเลือกการดำเนินการตามตัวดำเนินการที่เลือก
+                    switch (operator) {
+                        case '+': result = num1 + num2; break;
+                        case '-': result = num1 - num2; break;
+                        case '*': result = num1 * num2; break;
+                        case '/':
+                        case '%':
+                            // ตรวจสอบกรณีตัวหารเป็น 0
+                            if (num2 === 0) {
+                                alert("It's over 9000!"); // ข้อความพิเศษเมื่อหารด้วย 0
+                                console.error("It's over 9000!");
+                                return;
+                            }
+                            result = operator === '/' ? num1 / num2 : num1 % num2; // เลือกผลลัพธ์ตามตัวดำเนินการ
+                    }
+
+                    // แสดงผลลัพธ์ในกล่องข้อความและคอนโซล
+                    alert(`Result: ${result}`);
+                    console.log(`Result: ${result}`);
+                } catch (e) {
+                    // แสดงข้อความข้อผิดพลาดหากเกิดข้อผิดพลาด
+                    alert("Error :(");
+                    console.error("Error :(");
+                }
+            });
+
+            // ฟังก์ชันตรวจสอบว่าค่าที่ใส่เป็นจำนวนเต็มบวก
+            function isPositiveInteger(value) {
+                return /^\d+$/.test(value); // ใช้ Regular Expression เพื่อตรวจสอบ
+            }
+
+            // ตั้งค่าการแจ้งเตือนทุกๆ 30 วินาที
+            setInterval(function() {
+                alert("Please, use me...");
+            }, 30000); // ตั้งค่าเวลา 30 วินาที
+        });
+    </script>
+</body>
+</html>
